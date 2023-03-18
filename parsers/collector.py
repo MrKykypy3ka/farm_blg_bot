@@ -8,21 +8,21 @@ from parsers import analog
 
 
 def print_price(name):
-    result = tvoyaApteka.out(name)\
-              + minicen.out(name)\
-              + monastirev.out(name)\
-              + aptekaru.out(name)
-              # + amurfarma.out(name)
+    result = tvoyaApteka.out(name) \
+             + monastirev.out(name) \
+             + aptekaru.out(name) \
+             + minicen.out(name) \
+             + amurfarma.out(name)
     return result
 
 
 def print_min_price(name):
-     result = tvoyaApteka.out_min(name)\
-              + minicen.out_min(name)\
-              + monastirev.out_min(name)\
-              + aptekaru.out_min(name)
-
-     return result
+    result = tvoyaApteka.out_min(name) \
+             + monastirev.out_min(name) \
+             + aptekaru.out_min(name) \
+             + minicen.out_min(name) \
+             + amurfarma.out_min(name)
+    return result
 
 
 def print_analog(name):

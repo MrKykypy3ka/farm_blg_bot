@@ -20,15 +20,7 @@ STREET = {'17155': 'Игнатьевское шоссе, 14/4',
 def out(name):
     result = "🏥Миницен🏥\n"
     link = "https://api.minicen.ru/search/main?idTradePoint=15184&Request=" + name + "&SearchType=1&ReturnType=&Sorting=5&idGroup=&Page=1&PerPage=1&idAdvDiscountPage=&dontUseMix=0&idReplacement=&idMNN=&LongSessionID=&ApiVersion=3"
-    # data = {'idTradePoint': 15184,
-    #         'Request': name,
-    #         'SearchType': 1,
-    #         'Sorting': 5,
-    #         'Page': 1,
-    #         'PerPage': 1,
-    #         'dontUseMix': 0,
-    #         'ApiVersion': 3}
-    resource = requests.post(link, headers=header).text
+    resource = requests.get(link, headers=header).text
     resource = json.loads(resource)
     for elem in resource['Data']['tovar']:
         if elem['Price'] != None:
@@ -41,15 +33,7 @@ def out(name):
 def out_min(name):
     result = "🏥Миницен🏥\n"
     link = "https://api.minicen.ru/search/main?idTradePoint=15184&Request=" + name + "&SearchType=1&ReturnType=&Sorting=5&idGroup=&Page=1&PerPage=1&idAdvDiscountPage=&dontUseMix=0&idReplacement=&idMNN=&LongSessionID=&ApiVersion=3"
-    # data = {'idTradePoint': 15184,
-    #         'Request': name,
-    #         'SearchType': 1,
-    #         'Sorting': 5,
-    #         'Page': 1,
-    #         'PerPage': 1,
-    #         'dontUseMix': 0,
-    #         'ApiVersion': 3}
-    resource = requests.post(link, headers=header).text
+    resource = requests.get(link, headers=header).text
     resource = json.loads(resource)
     price = 100000000.0
     title = ""
@@ -71,7 +55,7 @@ def out_all(name):
         link = "https://api.minicen.ru/search/main?idTradePoint=" + key + "&Request="\
                       + name +\
                       "&SearchType=1&ReturnType=&Sorting=5&idGroup=&Page=1&PerPage=1&idAdvDiscountPage=&dontUseMix=0&idReplacement=&idMNN=&LongSessionID=&ApiVersion=3"
-        resource = requests.post(link, headers=header).text
+        resource = requests.get(link, headers=header).text
         resource = json.loads(resource)
         result += '🛣' + STREET[key] + '\n'
         for elem in resource['Data']['tovar']:
@@ -88,7 +72,7 @@ def out_min_all(name):
         link = "https://api.minicen.ru/search/main?idTradePoint=" + key + "&Request=" \
                + name + \
                "&SearchType=1&ReturnType=&Sorting=5&idGroup=&Page=1&PerPage=1&idAdvDiscountPage=&dontUseMix=0&idReplacement=&idMNN=&LongSessionID=&ApiVersion=3"
-        resource = requests.post(link, headers=header).text
+        resource = requests.get(link, headers=header).text
         resource = json.loads(resource)
         result += '🛣' + STREET[key] + '\n'
         for elem in resource['Data']['tovar']:
@@ -107,7 +91,7 @@ def out_availability(name):
         link = "https://api.minicen.ru/search/main?idTradePoint=" + key + "&Request=" \
                + name + \
                "&SearchType=1&ReturnType=&Sorting=5&idGroup=&Page=1&PerPage=1&idAdvDiscountPage=&dontUseMix=0&idReplacement=&idMNN=&LongSessionID=&ApiVersion=3"
-        resource = requests.post(link, headers=header).text
+        resource = requests.get(link, headers=header).text
         resource = json.loads(resource)
         price = 100000000.0
         title = ""

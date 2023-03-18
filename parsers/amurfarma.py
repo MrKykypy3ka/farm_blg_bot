@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import fake_useragent
+from selenium import webdriver
 
 user = fake_useragent.UserAgent().random
 header = {'user-agent': user}
@@ -27,64 +28,67 @@ STREET = {'1': 'ул. Комсомольская, д. 3',
           '115': 'ул. Шимановского, 38'}
 
 def out(name):
-    name = name.replace("n", "№")
     result = "🏥Амур фармация🏥\n"
-    link = "https://www.amurfarma.ru/search/?q=" + name
-    resource = requests.get(link, headers=header).text
-    soup = BeautifulSoup(resource, 'lxml')
-    titleAll = soup.findAll("a", {"class": "name"})
-    priceAll = soup.findAll("div", {"class": "basket"})
-    for i in range(min(len(titleAll), len(priceAll))):
-        result += "     💊" + " ".join(str(titleAll[i].text.lower().replace('мг/мл', 'мг').replace(' введ', '')).split()) + "\n    🪙" + " ".join(str(priceAll[i].text[:priceAll[i].text.index('.')]).split()) + "\n"
-    #with open("1.html", "w", encoding="utf-8") as file: file.write(resource)
+    driver = webdriver.Chrome()
+    driver.get("https://amurfarma.ru/search/?q=" + name)
+    page = driver.page_source
+    soup = BeautifulSoup(page, 'lxml')
+    titleAll = soup.findAll("h5", {"class": "h5 catalog-item__name"})
+    priceAll = soup.findAll("div", {"class": "catalog-item__old-price"})
+    for i in range(len(titleAll)):
+        title = str(titleAll[i]).replace('<h5 class="h5 catalog-item__name"><strong>', '').replace('</strong>',
+                                                                                                   '').replace('</h5>',
+                                                                                                               '')
+        price = str(priceAll[i]).replace('''<div class="catalog-item__old-price">
+                Цена без скидки:
+                <span class="price">''', '').replace('</span></div>', '')
+        result += "     💊" + title + "\n     🪙" + price + "\n"
     return result
 
 
 def out_min(name):
-    name = name.replace("n", "№")
     result = "🏥Амур фармация🏥\n"
-    link = "https://www.amurfarma.ru/search/?q=" + name
-    resource = requests.get(link, headers=header).text
-    soup = BeautifulSoup(resource, 'lxml')
-    titleAll = soup.findAll("a", {"class": "name"})
-    priceAll = soup.findAll("div", {"class": "basket"})
-    price = 100000000.0
-    title = ""
-    for i in range(min(len(titleAll), len(priceAll))):
-        new_price = float(" ".join(str(priceAll[i].text[:priceAll[i].text.index('.')]).split())[:-3].replace(",", "."))
-        if new_price < price:
-            price = new_price
-            title = " ".join(str(titleAll[i].text.lower().replace('мг/мл', 'мг').replace(' введ', '')).split())
-    if price != 100000000.0:
-        result += "     💊" + title + "\n    🪙" + str(price) + "руб.\n"
+    driver = webdriver.Chrome()
+    driver.get("https://amurfarma.ru/search/?q=" + name)
+    page = driver.page_source
+    soup = BeautifulSoup(page, 'lxml')
+    titleAll = soup.findAll("h5", {"class": "h5 catalog-item__name"})
+    priceAll = soup.findAll("div", {"class": "catalog-item__old-price"})
+    minPrice = 1000000
+    minTital = ""
+    for i in range(len(titleAll)):
+        title = str(titleAll[i]).replace('<h5 class="h5 catalog-item__name"><strong>', '').replace('</strong>',
+                                                                                                   '').replace('</h5>',
+                                                                                                               '')
+        price = str(priceAll[i]).replace('''<div class="catalog-item__old-price">
+                Цена без скидки:
+                <span class="price">''', '').replace('</span></div>', '')
+        if minPrice >= int(price[:-2]):
+            minPrice = int(price[:-2])
+            minTital = title
+    result += "     💊" + minTital + "\n     🪙" + str(minPrice) + "р.\n"
     return result
 
 
 def out_availability(name):
-    name = name.replace("n", "№")
     result = "🏥Амур фармация🏥\n"
-    link = "https://www.amurfarma.ru/search/?q=" + name
-    resource = requests.get(link, headers=header).text
-    soup = BeautifulSoup(resource, 'lxml')
-    item = soup.findAll("div", {"class": "product_wrap"})
-    PRODUCT_ID = ''
-    price = 100000000.0
-    for i in range(len(item)):
-        temp = item[i].find("div", {"class": "basket"})
-        new_price = float(" ".join(str(temp.text[:temp.text.index('.')]).split())[:-3].replace(",", "."))
-        if new_price < price:
-            price = new_price
-            datapid = str(item[i])
-            PRODUCT_ID = datapid[datapid.index("data-pid=") + 10:datapid.index("data-pid=") + 15]
-    link = "https://amurfarma.ru/local/templates/amurfarmacy_2015/ajax.php"
-    data = {"ajaxtype": "availability",
-            "PRODUCT_ID": PRODUCT_ID}
-    resource = requests.post(link, headers=header, data=data).text
-    soup = BeautifulSoup(resource, 'lxml')
-    h = soup.findAll("div", {"class": "day_wrap"})
-    for i in range(len(h)):
-        result += h[i].find("h5").text + "\n"
-        dragshop = h[i].findAll("div", {"class": "itemm"})
-        for j in range(len(dragshop)):
-            result += "      " + STREET[dragshop[j].text] + "\n"
+    driver = webdriver.Chrome()
+    driver.get("https://amurfarma.ru/search/?q=" + name)
+    page = driver.page_source
+    soup = BeautifulSoup(page, 'lxml')
+    titleAll = soup.findAll("h5", {"class": "h5 catalog-item__name"})
+    priceAll = soup.findAll("div", {"class": "catalog-item__old-price"})
+    minPrice = 1000000
+    minTital = ""
+    for i in range(len(titleAll)):
+        price = str(priceAll[i]).replace('''<div class="catalog-item__old-price">
+                    Цена без скидки:
+                    <span class="price">''', '').replace('</span></div>', '')
+        if minPrice >= int(price[:-2]):
+            minPrice = int(price[:-2])
+            minTital = str(titleAll[i]).replace('<h5 class="h5 catalog-item__name"><strong>', '').replace('</strong>',
+                                                                                                   '').replace('</h5>',
+                                                                                                               '')
+            availabilityAll = soup.findAll("div", {"class": "link link--no-dash in-stock__item"})
+    result += "     💊" + minTital + "\n     🪙" + str(minPrice) + "р.\n"
     return result
