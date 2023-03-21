@@ -10,7 +10,7 @@ from keyboards import key_board_main,\
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from parsers import collector
-
+from DB.add_request import medication_check
 
 async def send_welcome(message: types.Message):
     await message.answer("Привет!\nЯ бот Фармацевт!\nЯ помогу тебе найти лекарства.", reply_markup=key_board_main)
@@ -28,7 +28,8 @@ class FSMMenu(StatesGroup):
 @dp.message_handler(state=FSMDrag.nameDrag_all)
 async def load_name_drag_all(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
-        data['name'] = message.text
+        data['name'] = message.text.lower()
+    medication_check(data['name'])
     str = collector.print_price(data['name'])
     if len(str) > 4096:
         for x in range(0, len(str), 4096):
@@ -45,7 +46,8 @@ async def load_name_drag_all(message: types.Message, state: FSMContext):
 @dp.message_handler(state=FSMDrag.nameDrag_min)
 async def load_name_drag_min(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
-        data['name'] = message.text
+        data['name'] = message.text.lower()
+    medication_check(data['name'])
     await message.answer(collector.print_min_price(data['name']), reply_markup=key_board_search)
     await state.finish()
     await FSMMenu.choise_menu.set()

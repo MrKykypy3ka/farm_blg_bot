@@ -20,8 +20,8 @@ def print_min_price(name):
     result = tvoyaApteka.out_min(name) \
              + monastirev.out_min(name) \
              + aptekaru.out_min(name) \
-             + minicen.out_min(name) \
-             + amurfarma.out_min(name)
+             + minicen.out_min(name)
+             #+ amurfarma.out_min(name)
     return result
 
 
