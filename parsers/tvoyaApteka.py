@@ -26,23 +26,6 @@ def out(name):
                   + "\n    🪙" + " ".join(str(priceAll[i].find('span').text).split()) + "руб.\n"
     return result
 
-
-# def out(name):
-#     link = "https://www.tvoyaapteka.ru/catalog/?q=презервативы&sid=9fc4"
-#     data = {'q': name,
-#             'sid': '9fc4'}
-#     resource = requests.post(link, headers=header).text
-#     soup = BeautifulSoup(resource, 'lxml')
-#     with open("1.html", "w", encoding="utf-8") as file: file.write(resource)
-#     with open("1.txt", "w", encoding="utf-8") as file: file.write(resource)
-#     # priceAll = soup.findAll("div", {"class": "price_2 hidden-spp-store"})
-#     # titleAll = soup.findAll("div", {"class": "title"})
-#     result = "🏥Твоя Аптека🏥\n"
-#     # for i in range(len(titleAll)):
-#     #     result += "     💊" + " ".join(str(titleAll[i].find('a').text).split()) + "\n    🪙" + " ".join(str(priceAll[i].find('span').text).split()) + "руб.\n"
-#     return result
-
-
 def out_min(name):
     link = "https://www.tvoyaapteka.ru/auth/?auth=1"
     data = {'ajax_call': "y",
@@ -51,8 +34,6 @@ def out_min(name):
             'l': "3",
             'sid': "f415"}
     resource = requests.post(link, data=data, headers=header).text
-    with open("1.html", "w", encoding="utf-8") as file: file.write(resource)
-    with open("1.txt", "w", encoding="utf-8") as file: file.write(resource)
     soup = BeautifulSoup(resource, 'lxml')
     priceAll = soup.findAll("div", {"class": "price_2 hidden-spp-store"})
     titleAll = soup.findAll("div", {"class": "title"})
@@ -93,8 +74,4 @@ def out_availability(name):
             for j in range(len(item_availability)):
                 availability += item_availability[j].text + "\n"
     result += availability.replace(", посмотрите все", "").replace("Доставка", "").replace("  ", "").replace("\n\n", "\n")
-    #     new_price = float("".join(str(priceAll[i].find('span').text).split()).replace(",", "."))
-    #     if new_price < price:
-    #
-    # result += "     💊" + title + "\n    🪙" + str(price) + "руб.\n"
     return result

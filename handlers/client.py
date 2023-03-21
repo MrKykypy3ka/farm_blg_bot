@@ -1,4 +1,3 @@
-import keyboard as keyboard
 from aiogram import types, Dispatcher
 from create_bot import dp
 from keyboards import key_board_main,\
@@ -124,7 +123,7 @@ async def echo_menu(message: types.Message, state: FSMContext):
 
     elif message.text == '🔃 Аналоги':
         async with state.proxy() as data:
-            await message.answer(collector.print_analog(data['name']), reply_markup=key_board_search)
+            await message.answer(collector.print_analog(data['name'].lower()), reply_markup=key_board_search)
 
     elif message.text == '💵 Все цены в миницен':
         async with state.proxy() as data:
@@ -173,24 +172,3 @@ def register_handlers_client(dp: Dispatcher):
     dp.register_message_handler(send_welcome, commands=['старт', 'start'])
     dp.register_message_handler(echo, state=None)
     dp.register_message_handler(echo_menu, state=FSMMenu.choise_menu)
-
-
-# medicines = ['кагоцел', 'ношпа', 'снуп', 'ромашка', 'детралекс', 'аспирин',
-#              'парацетамол', 'тизин', 'отривин', 'ацц', 'анвимакс', 'диазалин',
-#              'кагоцел', 'кагоцел', 'кагоцел', 'БГПУ', '.', ' ']
-# number_test = 0
-#
-#
-# def test():
-#     global number_test #знаю что так нехорошо делать
-#     for elem in medicines:
-#         number_test += 1
-#         dp.send_message(elem)
-#
-#
-# @dp.message_handler(content_types=["text"])
-# def repeat_all_messages(message):
-#     if medicines[number_test] in message:
-#         dp.send_message('Бот нашёл совпадения')
-#     else:
-#         dp.send_message('Совпадений нет')

@@ -1,5 +1,4 @@
 from aiogram import types, Dispatcher
-from create_bot import dp
 
 
 async def echo(message: types.Message):

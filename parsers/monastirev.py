@@ -98,13 +98,6 @@ def out_min(name):
         price = elem.findAll('div', {'class': 'offer__price-block'})
         if len(price) == 0:
             continue
-            # price_now = elem.find('div', {'class': 'offer__price-current'}).text
-            # price_now = float(" ".join(str(price_now.lower()).split()))
-            # if price_now < price_temp:
-            #     result = "🏥Монастырёв🏥\n" + "     💊" + title + ' ' + dosage + '\n'
-            #     price_temp = price_now
-            #     date_now_temp = elem.find('div', {'class': 'offer__historycal-date'}).text
-            #     date_now_temp = " ".join(str(date_now_temp.lower()).split())
         elif 'offer__price-unavailable' in str(price[0]):
             price_fut = price[1].find('div', {'class': 'offer__price-current'}).text
             price_fut = float(" ".join(str(price_fut.lower()).replace(" ", "").split()))
@@ -138,68 +131,6 @@ def out_min(name):
     else:
         result = "🏥Монастырёв🏥\n"
     return result
-
-
-# def out(name):
-#     name = name.replace("n", "№")
-#     link = "https://monastirev.ru/search?term=" + name
-#     cookies = {'kladr': '2800000100000'}
-#     resource = requests.post(link, headers=header, cookies=cookies).text
-#     print(resource)
-#     with open("1.html", "w", encoding="utf-8") as file: file.write(resource)
-#     soup = BeautifulSoup(resource, 'lxml')
-#     priceAll = soup.findAll("div", {"class": "offer__price-current"})
-#     titleAll = soup.findAll("div", {"class": "offer__title link__text"})
-#     dosageAll = soup.findAll("div", {"class": "offer__description"})
-#     result = "🏥Монастырёв🏥\n"
-#     for i in range(len(titleAll)):
-#         dosage = " ".join(str(dosageAll[i].text.lower()).split())
-#         for elem in trash:
-#             if elem in dosage:
-#                 dosage = dosage.replace(elem, '')
-#         result += "     💊" + " ".join(str(titleAll[i].text.lower()).split()) + " " +\
-#                   dosage.replace('внутривенного введения', 'в/в')\
-#                       .replace('внутримышечного введения', 'в/м')\
-#                       .replace('раствор', 'р-р')\
-#                       .replace('таблетки', 'тбл')\
-#                       .replace('ампула', 'амп') + "\n    🪙" + " ".join(str(priceAll[i].text).split()) + "руб.\n"
-#     # with open("1.html", "w", encoding="utf-8") as file: file.write(resource)
-#     return result
-
-
-# def out_min(name):
-#     name = name.replace("n", "№")
-#     link = "https://monastirev.ru/search?term=" + name
-#     cookies = {'kladr': '2800000100000'}
-#     resource = requests.post(link, headers=header, cookies=cookies).text
-#     soup = BeautifulSoup(resource, 'lxml')
-#     print(resource)
-#     with open("1.html", "w", encoding="utf-8") as file: file.write(resource)
-#     priceAll = soup.findAll("div", {"class": "offer__price-current"})
-#     titleAll = soup.findAll("div", {"class": "offer__title link__text"})
-#     dosageAll = soup.findAll("div", {"class": "offer__description"})
-#     result = "🏥Монастырёв🏥\n"
-#     price = 100000000.0
-#     title = ""
-#     dosageNew = ""
-#     for i in range(len(titleAll)):
-#         dosage = " ".join(str(dosageAll[i].text.lower()).split())
-#         for elem in trash:
-#             if elem in dosage:
-#                 dosage = dosage.replace(elem, '')
-#         if float("".join(priceAll[i].text.split())) < price:
-#             price = float("".join(priceAll[i].text.split()))
-#             title = " ".join(str(titleAll[i].text.lower()).split())
-#             dosageNew = dosage
-#     result += "     💊" + title + " "+\
-#     dosageNew.replace('внутривенного введения', 'в/в')\
-#             .replace('внутримышечного введения', 'в/м')\
-#             .replace('раствор', 'р-р')\
-#             .replace('таблетки', 'тбл')\
-#             .replace('ампула', 'амп') + "\n    🪙" + str(price) + "руб.\n"
-#     # with open("1.html", "w", encoding="utf-8") as file: file.write(resource)
-#     return result
-
 
 def out_availability(name):
     result = "🏥Монастырёв🏥\n"

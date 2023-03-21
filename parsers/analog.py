@@ -15,14 +15,11 @@ def search_analog(name):
     analogAll = soup.findAll("td")
     count = 0
     result = "🔃Аналоги🔃\n"
-    print(result)
     for i in range(len(analogAll)):
         td = str(analogAll[i])
-        print(td)
         if td.find('href="https://analogi.info/') > -1:
             count += 1
             result += "     💊" + td[td.find(">", 20) + 1:td.find("<", 20)] + "\n"
         if count == 10:
-            print(result)
             break
     return result

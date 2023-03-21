@@ -1,4 +1,3 @@
-import requests
 from bs4 import BeautifulSoup
 import fake_useragent
 from selenium import webdriver
