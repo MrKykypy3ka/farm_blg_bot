@@ -60,8 +60,6 @@ def out_availability(name):
             'l': "3",
             'sid': "f415"}
     resource = requests.post(link, data=data, headers=header).text
-    with open("1.html", "w", encoding="utf-8") as file: file.write(resource)
-    with open("1.txt", "w", encoding="utf-8") as file: file.write(resource)
     soup = BeautifulSoup(resource, 'lxml')
     item = soup.findAll("div", {"class": "bx_item_block clearfix"})
     availability = ''

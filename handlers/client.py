@@ -10,9 +10,13 @@ from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from parsers import collector
 from DB.add_request import medication_check
+from aiogram.types.input_file import InputFile
+
 
 async def send_welcome(message: types.Message):
     await message.answer("Привет!\nЯ бот Фармацевт!\nЯ помогу тебе найти лекарства.", reply_markup=key_board_main)
+    photo = InputFile("image/hello.jpg")
+    await dp.bot.send_photo(chat_id=message.chat.id, photo=photo)
 
 
 class FSMDrag(StatesGroup):
