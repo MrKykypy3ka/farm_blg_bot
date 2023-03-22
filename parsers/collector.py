@@ -58,22 +58,40 @@ def print_min_price(name):
 
 
 def print_analog(name):
-    return analog.search_analog(name)
+    try:
+        return analog.search_analog(name)
+    except:
+        return "🏥Аналоги🏥\n😔Ошибка поиска (в скором времени мы всё поправим)"
 
 
 def print_availability(name, dragshop):
-    if dragshop == 'Твоя аптека':
-        return tvoyaApteka.out_availability(name)
-    elif dragshop == 'Миницен':
-        return minicen.out_availability(name)
-    elif dragshop == 'Монастырёв':
-        return monastirev.out_availability(name)
-    # elif dragshop == 'Амур Фармация':
-    #     return amurfarma.out_availability(name)
+    try:
+        if dragshop == 'Твоя аптека':
+            return tvoyaApteka.out_availability(name)
+    except:
+        return "🏥Твоя аптека🏥\n😔Ошибка поиска (в скором времени мы всё поправим)"
+    try:
+        if dragshop == 'Миницен':
+            return minicen.out_availability(name)
+    except:
+        return "🏥Миницен🏥\n😔Ошибка поиска (в скором времени мы всё поправим)"
+    try:
+        if dragshop == 'Монастырёв':
+            return monastirev.out_availability(name)
+    except:
+        return "🏥Монастырёв🏥\n😔Ошибка поиска (в скором времени мы всё поправим)"
+    try:
+        if dragshop == 'Амур Фармация':
+             return amurfarma.out_availability(name)
+    except:
+        return "🏥Амур Фармация🏥\n😔Ошибка поиска (в скором времени мы всё поправим)"
 
 
 def print_minicen(name, choise):
-    if choise == 'all':
-        return minicen.out_all(name)
-    else:
-        return minicen.out_min_all(name)
+    try:
+        if choise == 'all':
+            return minicen.out_all(name)
+        else:
+            return minicen.out_min_all(name)
+    except:
+        return "😔Ошибка поиска (в скором времени мы всё поправим)"
